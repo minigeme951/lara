@@ -12,17 +12,27 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+/*Где нас найти */
+Route::get('/where', function(){
+    return view('wherefound');
+} );
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [App\Http\Controllers\hc::class,'about']);
+Route::get('/catalog', [App\Http\Controllers\hc::class,'showCatalog']);
+Route::get('/catalog/sort/{name}/{nap}',[App\Http\Controllers\hc::class,'showCatalog'] );
+Route::get('/catalog/{id}', [App\Http\Controllers\hc::class,'singleProduct']);
+Route::get('/catalog/filter/{id}', [App\Http\Controllers\hc::class,'filterr']);
+Route::get('/admin',[App\Http\Controllers\Admin::class,'adminshow']);
+/*удаление элементов категорий и товаров*/
+Route::get('/admin/item/del/{id}',[App\Http\Controllers\Admin::class,'admindelitem']);
+Route::get('/admin/cat/del/{id}',[App\Http\Controllers\Admin::class,'admindelcat']);
+/* Добавление категории */
+Route::get('/admin/cat/',function(){
+    return view('addcat');
 });
-Route::get('/about', function () {
-    return view('about');
-});
-Route::get('/catalog',[App\Http\Controllers\catalog::class,'listall'])->name('catalog');
-Route::get('/catalog/filter/{id}',[App\Http\Controllers\catalog::class,'filterr'])->name('catalog');
-Route::get('/catalog/sort/{name}/{sort}',[App\Http\Controllers\catalog::class,'listall'])->name('catalog');
-Route::get('/catalog/one/{id}',[App\Http\Controllers\catalog::class,'oneprod'])->name('oneprod');
+Route::post('/admin/cat/add',[App\Http\Controllers\Admin::class,'adminaddcat']);
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
